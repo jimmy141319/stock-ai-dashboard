@@ -1,17 +1,34 @@
-const state={foreignCash:-1800,foreignFutures:81000,marginBalance:6200,usdtwd:31.5};
-const mega=[['2330','台積電'],['2454','聯發科'],['2317','鴻海'],['2308','台達電'],['2382','廣達'],['3711','日月光'],['2303','聯電']];
-const etfs=[['00403A','主動統一升級50','4,000','台股權值/成長','每週'],['00406A','主動中信台灣收益','3,000','月配/收益策略','每週'],['00916','國泰全球品牌50','5,000','全球品牌/年配','每週'],['00939','統一台灣高息動能','1,000','高股息/月配','每週']];
-const small=[['1304','台聚','4張','塑化低價輪動','看量能/外資/支撐'],['6116','彩晶','2張','面板反彈處理','反彈先減1張'],['1718','中纖','觀察','化纖低價題材','不追高/看量']];
-const global=[['SOX','費半','--','--','AI半導體風向'],['NASDAQ','Nasdaq','--','--','科技股風向'],['NVDA','NVIDIA','--','--','AI上游核心'],['MU','Micron','--','--','HBM/記憶體'],['AAPL','Apple','--','--','終端成本壓力'],['META','Meta','--','--','AI CAPEX壓力']];
-function pill(text,level){return `<span class="pill ${level}">${text}</span>`}
-function riskLevel(score){if(score>=75)return['高風險','red'];if(score>=55)return['震盪','yellow'];return['相對安全','green']}
-function calcRisk(){let s=35;if(state.foreignCash<-1000)s+=20;else if(state.foreignCash<0)s+=10;if(state.foreignFutures>80000)s+=20;else if(state.foreignFutures>60000)s+=12;if(state.marginBalance>6000)s+=10;if(state.usdtwd>31.45)s+=12;return Math.min(100,s)}
-function render(){document.getElementById('now').textContent='更新時間：'+new Date().toLocaleString('zh-TW');const score=calcRisk();const [title,cls]=riskLevel(score);const el=document.getElementById('riskScore');el.textContent=score;el.className='score '+cls;document.getElementById('riskTitle').textContent=title;document.getElementById('riskText').textContent= score>=75?'外資/空單/匯率偏空，個股避免追高。':score>=55?'震盪盤，ETF底倉可放，中小型股控部位。':'風險較低，可觀察低檔輪動。';
-const rows=[['外資現貨',state.foreignCash+' 億',state.foreignCash<-1000?pill('紅','red'):pill('黃','yellow'),'連續大賣=提款壓力'],['外資台指期空單',state.foreignFutures+' 口',state.foreignFutures>80000?pill('紅','red'):pill('黃','yellow'),'8萬口以上=高壓力'],['融資餘額',state.marginBalance+' 億',state.marginBalance>6000?pill('黃','yellow'):pill('綠','green'),'不減反增=散戶槓桿未洗'],['USD/TWD',state.usdtwd,state.usdtwd>31.45?pill('紅','red'):pill('黃','yellow'),'台幣貶=外資匯損壓力'],['0050/台積電','觀察',pill('黃','yellow'),'權值股決定指數'],['日韓/美股','觀察',pill('黃','yellow'),'亞洲資金同步性']];
-document.getElementById('macroTable').innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
-document.getElementById('summaryBox').innerHTML=[`風險分數：${score}`,score>=75?'策略：個股降槓桿，不追高。':'策略：等回測支撐，分批。','ETF：長期底倉，每週看一次。','中小型：每天看量、價、外資、融資。'].map(x=>`<div>${x}</div>`).join('');
-document.getElementById('globalTable').innerHTML=global.map(r=>`<tr><td>${r[0]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
-document.getElementById('megaTable').innerHTML=mega.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>--</td><td>--</td><td>${pill('手動/延遲','yellow')}</td></tr>`).join('');
-document.getElementById('etfTable').innerHTML=etfs.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');
-document.getElementById('smallTable').innerHTML=small.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('');}
-document.getElementById('applyBtn').onclick=()=>{state.foreignCash=+foreignCash.value;state.foreignFutures=+foreignFutures.value;state.marginBalance=+marginBalance.value;state.usdtwd=+usdtwd.value;render()};document.getElementById('refreshBtn').onclick=render;render();
+const stocks = [
+  {rank:1, cat:"持股", code:"1718", name:"中纖", price:8.72, chg:"+3.44", eps:"0.12", pe:"72.7", yoy:"轉佳", foreign:"偏買", margin:"注意", tech:"量增突破", risk:"低價波動", plan:"分批、看量"},
+  {rank:2, cat:"持股", code:"1905", name:"華紙", price:17.45, chg:"+1.16", eps:"0.34", pe:"51.3", yoy:"改善", foreign:"觀察", margin:"升高", tech:"強勢整理", risk:"漲多回檔", plan:"獲利分批鎖"},
+  {rank:3, cat:"持股", code:"6116", name:"彩晶", price:8.80, chg:"+4.02", eps:"-0.22", pe:"虧損", yoy:"低基期", foreign:"偏買", margin:"高", tech:"面板輪動", risk:"基本面弱", plan:"短線不戀戰"},
+  {rank:4, cat:"觀察", code:"1314", name:"中石化", price:7.98, chg:"-0.38", eps:"-0.18", pe:"虧損", yoy:"改善中", foreign:"曾大買", margin:"高", tech:"震盪換手", risk:"當沖多", plan:"只看支撐"},
+  {rank:5, cat:"觀察", code:"1304", name:"台聚", price:13.20, chg:"+0.76", eps:"0.05", pe:"264", yoy:"待確認", foreign:"小買賣", margin:"普通", tech:"低位整理", risk:"獲利弱", plan:"等量再進"},
+  {rank:6, cat:"ETF", code:"00406A", name:"低價ETF", price:10.05, chg:"+0.10", eps:"-", pe:"-", yoy:"-", foreign:"-", margin:"-", tech:"貼近成本", risk:"短線慢", plan:"偏配息持有"}
+];
+
+function render(list){
+  const tbody = document.querySelector("#stockTable tbody");
+  tbody.innerHTML = list.map(s => {
+    const cls = String(s.chg).startsWith("+") ? "up" : String(s.chg).startsWith("-") ? "down" : "mid";
+    return `<tr>
+      <td>${s.rank}</td><td>${s.cat}</td><td>${s.code}</td><td>${s.name}</td><td>${s.price}</td>
+      <td class="${cls}">${s.chg}%</td><td>${s.eps}</td><td>${s.pe}</td><td>${s.yoy}</td>
+      <td>${s.foreign}</td><td>${s.margin}</td><td>${s.tech}</td><td>${s.risk}</td><td>${s.plan}</td>
+    </tr>`;
+  }).join("");
+}
+render(stocks);
+
+document.querySelector("#search").addEventListener("input", e=>{
+  const q = e.target.value.trim();
+  render(stocks.filter(s => Object.values(s).join(" ").includes(q)));
+});
+
+document.querySelector("#themeBtn").addEventListener("click", ()=>{
+  document.body.classList.toggle("dark");
+});
+
+document.querySelector("#watchList").innerHTML = stocks.slice(0,4).map(s =>
+  `<li><b>${s.code} ${s.name}</b>：${s.plan}，風險：${s.risk}</li>`
+).join("");

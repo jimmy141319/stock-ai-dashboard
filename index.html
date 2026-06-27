@@ -2,86 +2,82 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Jimmy Stock Terminal V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SeaStock V5｜家庭 CFO 股票分析系統</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topbar">
     <div>
-      <h1>Jimmy Stock Terminal V3</h1>
-      <p id="now">更新中...</p>
+      <div class="kicker">SeaStock V5｜家庭 CFO 決策系統</div>
+      <h1>SeaStock V5 家庭 CFO 股票分析系統</h1>
+      <p>現金流改善｜持股控管｜低價股研究｜匯率觀察</p>
     </div>
-    <button id="refreshBtn">刷新</button>
+    <button id="themeBtn">切換深色</button>
   </header>
 
   <main>
-    <section class="hero card">
-      <div class="score" id="riskScore">--</div>
-      <div>
-        <h2 id="riskTitle">讀取風險</h2>
-        <p id="riskText">V3：一頁看外資、期貨、匯率、融資、權值、ETF、持股。</p>
+    <section class="cards">
+      <article class="card"><span>家庭現金流目標</span><strong>股票 +10,000/月</strong><small>不是賭博，是補現金流</small></article>
+      <article class="card"><span>交易風控</span><strong>單日 ±5,000</strong><small>接近警戒就停止交易</small></article>
+      <article class="card"><span>資金立場</span><strong>先活下來</strong><small>保本金、保子彈、保心情</small></article>
+    </section>
+
+    <section class="panel">
+      <h2>家庭 CFO 決策儀表</h2>
+      <div class="cfo-grid">
+        <div><span>Uber 保底</span><b>家庭現金流底盤</b><small>股票不順時，不硬凹。</small></div>
+        <div><span>股票目標</span><b>每月補 10,000</b><small>分批小利，累積現金流。</small></div>
+        <div><span>家庭支出</span><b>控制固定成本</b><small>不要讓交易壓力變成生活壓力。</small></div>
+        <div><span>投資原則</span><b>低價、量能、籌碼</b><small>不追高本夢比，不追瘋狂 ETF。</small></div>
       </div>
     </section>
 
-    <section class="grid2">
-      <div class="card">
-        <h3>總體風險燈號</h3>
-        <table>
-          <tbody id="macroTable"></tbody>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>持股與研究清單</h2>
+        <input id="search" placeholder="搜尋代號 / 公司 / 類別" />
+      </div>
+      <div class="table-wrap">
+        <table id="stockTable">
+          <thead>
+            <tr>
+              <th>排序</th><th>類別</th><th>代號</th><th>公司</th><th>現價</th><th>漲跌%</th>
+              <th>EPS</th><th>本益比</th><th>YoY</th><th>外資</th><th>融資</th><th>技術位階</th><th>風險</th><th>CFO 策略</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
         </table>
       </div>
-      <div class="card">
-        <h3>盤勢結論</h3>
-        <div id="summaryBox" class="summary"></div>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>持股提醒</h2>
+        <ul id="watchList"></ul>
+      </article>
+      <article class="panel">
+        <h2>操作紀律</h2>
+        <ol>
+          <li>先問：這筆交易是改善現金流，還是情緒追單？</li>
+          <li>看錯就砍，不用跟股票談感情。</li>
+          <li>有賺先鎖，分批賣比一次猜高點安全。</li>
+          <li>現金是子彈，不滿倉才有明天。</li>
+        </ol>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>匯率與資金流</h2>
+      <div class="fx">
+        <div><span>日幣成本</span><strong>0.1985</strong><small>低於成本再分批，不急賣。</small></div>
+        <div><span>人民幣</span><strong>觀察中</strong><small>看一個月強弱與換匯成本。</small></div>
+        <div><span>美元 / 外資</span><strong>資金風向</strong><small>外資匯出時，台股壓力加大。</small></div>
       </div>
-    </section>
-
-    <section class="card">
-      <h3>全球 AI / 半導體雷達</h3>
-      <table>
-        <thead><tr><th>項目</th><th>價格</th><th>漲跌%</th><th>判斷</th></tr></thead>
-        <tbody id="globalTable"></tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h3>權值股雷達</h3>
-      <table>
-        <thead><tr><th>代號</th><th>名稱</th><th>價格</th><th>漲跌%</th><th>燈號</th></tr></thead>
-        <tbody id="megaTable"></tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h3>ETF 底倉雷達</h3>
-      <table>
-        <thead><tr><th>代號</th><th>名稱</th><th>持股</th><th>配息/定位</th><th>追蹤頻率</th></tr></thead>
-        <tbody id="etfTable"></tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h3>中小型個股作戰表</h3>
-      <table>
-        <thead><tr><th>代號</th><th>名稱</th><th>持股</th><th>定位</th><th>今日動作</th></tr></thead>
-        <tbody id="smallTable"></tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h3>手動輸入區（盤後資料）</h3>
-      <div class="inputs">
-        <label>外資現貨億<input id="foreignCash" type="number" value="-1800"></label>
-        <label>外資空單口<input id="foreignFutures" type="number" value="81000"></label>
-        <label>融資餘額億<input id="marginBalance" type="number" value="6200"></label>
-        <label>USD/TWD<input id="usdtwd" type="number" value="31.5" step="0.01"></label>
-      </div>
-      <button id="applyBtn" class="wide">套用手動數據</button>
     </section>
   </main>
 
-  <footer>V3 免費版：盤中價格可能延遲；法人、融資、期貨以盤後/手動為準。</footer>
+  <footer>SeaStock V5｜GitHub Pages 版：上傳根目錄即可。</footer>
   <script src="script.js"></script>
 </body>
 </html>
