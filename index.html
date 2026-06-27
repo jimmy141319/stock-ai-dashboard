@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>台股風險雷達 V1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>台股風險雷達 V1</h1>
+      <p id="updated">等待更新...</p>
+    </div>
+    <button id="refreshBtn">立即刷新</button>
+  </header>
+
+  <section class="score-card">
+    <div class="score" id="riskScore">--</div>
+    <div>
+      <h2 id="riskLabel">讀取中</h2>
+      <p id="riskNote">一頁看完：外資、期貨、匯率、ETF、融資、權值股、持股。</p>
+    </div>
+  </section>
+
+  <main class="grid">
+    <section class="panel">
+      <h3>總體風險燈號</h3>
+      <table id="macroTable"></table>
+    </section>
+
+    <section class="panel">
+      <h3>權值股雷達</h3>
+      <table id="heavyTable"></table>
+    </section>
+
+    <section class="panel">
+      <h3>ETF 雷達</h3>
+      <table id="etfTable"></table>
+    </section>
+
+    <section class="panel">
+      <h3>我的持股</h3>
+      <table id="myTable"></table>
+    </section>
+
+    <section class="panel wide">
+      <h3>操作判斷表</h3>
+      <table>
+        <tr><th>分數</th><th>狀態</th><th>操作</th></tr>
+        <tr><td>80–100</td><td>偏多</td><td>可持股，個股可小量操作</td></tr>
+        <tr><td>60–79</td><td>震盪</td><td>ETF續抱，個股控部位</td></tr>
+        <tr><td>40–59</td><td>偏空</td><td>降低中小型個股，保留現金</td></tr>
+        <tr><td>40以下</td><td>高風險</td><td>現金優先，不追反彈</td></tr>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>免費版限制：股價可能延遲；外資、融資、期貨多為盤後資料。此工具用於風險監控，不是買賣建議。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
